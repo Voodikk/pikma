@@ -124,9 +124,37 @@ const noMessages = [
 ];
 
 setTimeout(() => {
-    welcomeText.style.display = "none";
-    questionBlock.style.display = "block";
-}, 6000);
+    welcomeText.style.transition = 'opacity 0.7s ease, transform 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53)';
+    welcomeText.style.opacity = '0';
+    welcomeText.style.transform = 'translateY(80px)';
+
+    welcomeText.style.filter = 'blur(4px)';
+
+    setTimeout(() => {
+        welcomeText.style.display = "none";
+
+        questionBlock.style.display = "block";
+        questionBlock.style.opacity = "0";
+        questionBlock.style.transform = "translateY(40px) scale(0.95)";
+        questionBlock.style.filter = "blur(5px)";
+
+        setTimeout(() => {
+            questionBlock.style.transition = "all 0.8s cubic-bezier(0.34, 1.2, 0.64, 1)";
+            questionBlock.style.opacity = "1";
+            questionBlock.style.transform = "translateY(0) scale(1)";
+            questionBlock.style.filter = "blur(0)";
+
+            setTimeout(() => {
+                questionBlock.style.transform = "scale(1.02)";
+                setTimeout(() => {
+                    if (questionBlock.style.display === "block") {
+                        questionBlock.style.transform = "scale(1)";
+                    }
+                }, 150);
+            }, 400);
+        }, 50);
+    }, 700);
+}, 5000);
 
 yesBtn.addEventListener('click', () => {
     intro.style.display = 'none';
