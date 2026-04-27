@@ -37,26 +37,37 @@ body {
     50% { opacity: 1; transform: scale(1.5); }
 }
 
+/* Адаптивная карточка - уменьшена на 20% */
 .card-wrapper {
     position: relative;
     z-index: 10;
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .card {
-    width: 420px;
-    min-height: 560px;
+    width: 100%;
+    max-width: 336px; /* 420px - 20% = 336px */
+    min-height: 448px; /* 560px - 20% = 448px */
     background: linear-gradient(145deg, #1a0a2e 0%, #2d1250 50%, #1a0a2e 100%);
-    border-radius: 28px;
+    border-radius: 22px; /* был 28px, уменьшили */
     border: 1px solid rgba(255, 200, 255, 0.2);
-    box-shadow: 0 0 60px rgba(180, 100, 255, 0.3), 0 0 140px rgba(180, 100, 255, 0.1), inset 0 0 80px rgba(255, 150, 200, 0.05);
-    padding: 56px 48px;
+    box-shadow: 0 0 48px rgba(180, 100, 255, 0.3), 0 0 112px rgba(180, 100, 255, 0.1), inset 0 0 64px rgba(255, 150, 200, 0.05);
+    padding: 45px 38px; /* был 56px 48px */
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 28px;
+    gap: 22px; /* был 28px */
     animation: float 6s ease-in-out infinite;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card .reveal {
+    margin: 0;
 }
 
 .card:hover {
@@ -71,8 +82,8 @@ body {
 
 .heart-container {
     position: relative;
-    width: 110px;
-    height: 100px;
+    width: 88px;
+    height: 80px;
 }
 
 .heart {
@@ -117,8 +128,8 @@ body {
 .greeting {
     font-family: 'Lato', sans-serif;
     font-weight: 300;
-    font-size: 12px;
-    letter-spacing: 5px;
+    font-size: 10px;
+    letter-spacing: 4px;
     text-transform: uppercase;
     color: rgba(255, 180, 230, 0.55);
     text-align: center;
@@ -126,10 +137,10 @@ body {
 
 .main-text {
     font-family: 'Playfair Display', serif;
-    font-size: 30px;
+    font-size: 24px;
     color: #f5d0f0;
     text-align: center;
-    line-height: 1.4;
+    line-height: 1.3;
     text-shadow: 0 0 30px rgba(255, 150, 220, 0.5);
 }
 
@@ -139,24 +150,24 @@ body {
 }
 
 .divider {
-    width: 60px;
+    width: 48px;
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(255, 180, 230, 0.4), transparent);
 }
 
 .message {
-    font-size: 15px;
+    font-size: 12px;
     color: rgba(220, 190, 255, 0.75);
     text-align: center;
-    line-height: 1.9;
-    max-width: 300px;
+    line-height: 1.7;
+    max-width: 260px;
     letter-spacing: 0.3px;
 }
 
 .signature {
     font-family: 'Playfair Display', serif;
     font-style: italic;
-    font-size: 18px;
+    font-size: 15px;
     color: rgba(255, 180, 220, 0.45);
     margin-top: 4px;
 }
@@ -283,5 +294,56 @@ button:hover {
     100% {
         transform: translateY(110vh) scale(0.6);
         opacity: 0;
+    }
+}
+
+/* Медиа-запрос для очень маленьких экранов */
+@media (max-width: 480px) {
+    .card-wrapper {
+        padding: 10px;
+    }
+
+    .card {
+        max-width: 300px;
+        min-height: 400px;
+        padding: 35px 25px;
+        gap: 18px;
+    }
+
+    .heart-container {
+        width: 75px;
+        height: 68px;
+    }
+
+    .main-text {
+        font-size: 20px;
+    }
+
+    .message {
+        font-size: 11px;
+        line-height: 1.6;
+        max-width: 220px;
+    }
+
+    .greeting {
+        font-size: 9px;
+        letter-spacing: 3px;
+    }
+
+    .signature {
+        font-size: 13px;
+    }
+
+    .divider {
+        width: 40px;
+    }
+}
+
+/* Для очень больших экранов можно вернуть оригинальный размер */
+@media (min-width: 1200px) {
+    .card {
+        max-width: 380px;
+        min-height: 500px;
+        padding: 50px 42px;
     }
 }
