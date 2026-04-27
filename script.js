@@ -256,63 +256,65 @@ function createRippleEffect(element) {
     }).onfinish = () => ripple.remove();
 }
 
-const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-let audioContext = null;
-let soundEnabled = false;
+let audioCtx = null;
+let isPlaying = false;
 
-// Создаём звук при первом клике
-function setupAudio() {
-    if (!audioContext) {
-        audioContext = new AudioContextClass();
+function getAudioContext() {
+    if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
     }
-    
-    if (audioContext.state === 'suspended') {
-        audioContext.resume().then(() => {
-            soundEnabled = true;
-            console.log('Audio enabled');
-        }).catch(e => console.log('Audio error:', e));
-    } else {
-        soundEnabled = true;
-    }
+    return audioCtx;
 }
 
-function playBubbleSound() {
-    if (!soundEnabled || !audioContext || audioContext.state !== 'running') {
+function playBubble() {
+    const ctx = getAudioContext();
+    
+    // Проверяем состояние
+    if (ctx.state !== 'running') {
+        ctx.resume().then(() => {
+            playBubble(); // Повторяем после активации
+        });
         return;
     }
     
+    // Ограничиваем частоту звуков (чтоб не перегружать)
+    if (isPlaying) return;
+    isPlaying = true;
+    
     try {
-        const now = audioContext.currentTime;
-        
-        // Создаём короткий звук
-        const gain = audioContext.createGain();
+        const now = ctx.currentTime;
+        const gain = ctx.createGain();
         gain.gain.value = 0.12;
-        gain.connect(audioContext.destination);
+        gain.connect(ctx.destination);
         
-        const osc = audioContext.createOscillator();
+        const osc = ctx.createOscillator();
         osc.type = 'sine';
-        osc.frequency.value = 500 + Math.random() * 300;
+        osc.frequency.value = 450 + Math.random() * 200;
         osc.connect(gain);
         
         osc.start();
-        osc.stop(now + 0.1);
+        osc.stop(now + 0.12);
         
-        gain.gain.exponentialRampToValueAtTime(0.00001, now + 0.12);
+        gain.gain.exponentialRampToValueAtTime(0.00001, now + 0.15);
         
-        // Автоматическая очистка
-        osc.onended = () => {
-            try {
-                gain.disconnect();
-                osc.disconnect();
-            } catch(e) {}
-        };
+        // Сбрасываем флаг через время
+        setTimeout(() => {
+            isPlaying = false;
+        }, 150);
     } catch(e) {
-        console.log('Play error:', e);
+        isPlaying = false;
     }
 }
 
-// Вешаем обработчик
-document.addEventListener('click', () => {
-    setupAudio();
-    playBubbleSound();
+// Первый клик активирует звук
+document.body.addEventListener('click', () => {
+    const ctx = getAudioContext();
+    if (ctx.state === 'suspended') {
+        ctx.resume().then(() => {
+            console.log('Audio activated');
+        });
+    } else {
+        playBubble();
+    }
 });
