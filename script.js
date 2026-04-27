@@ -256,46 +256,63 @@ function createRippleEffect(element) {
     }).onfinish = () => ripple.remove();
 }
 
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+let audioContext = null;
+let soundEnabled = false;
 
-function playBetterBubbleSound() {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    const now = audioCtx.currentTime;
-
-    const gainNode = audioCtx.createGain();
-    gainNode.gain.value = 0.2;
-    gainNode.connect(audioCtx.destination);
-
-    const osc1 = audioCtx.createOscillator();
-    osc1.type = 'sine';
-    osc1.frequency.value = 400;
-    osc1.connect(gainNode);
-    osc1.start();
-    osc1.stop(now + 0.15);
-
-    const osc2 = audioCtx.createOscillator();
-    osc2.type = 'triangle';
-    osc2.frequency.value = 800;
-    osc2.connect(gainNode);
-    osc2.start();
-    osc2.stop(now + 0.1);
-
-    gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
-
-    if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
+// Создаём звук при первом клике
+function setupAudio() {
+    if (!audioContext) {
+        audioContext = new AudioContextClass();
     }
-}
-
-// Функция для инициализации аудио (по первому клику)
-function initAudio() {
+    
     if (audioContext.state === 'suspended') {
-        audioContext.resume();
+        audioContext.resume().then(() => {
+            soundEnabled = true;
+            console.log('Audio enabled');
+        }).catch(e => console.log('Audio error:', e));
+    } else {
+        soundEnabled = true;
     }
 }
 
-document.addEventListener('click', (event) => {
-    initAudio();
-    playBetterBubbleSound();
+function playBubbleSound() {
+    if (!soundEnabled || !audioContext || audioContext.state !== 'running') {
+        return;
+    }
+    
+    try {
+        const now = audioContext.currentTime;
+        
+        // Создаём короткий звук
+        const gain = audioContext.createGain();
+        gain.gain.value = 0.12;
+        gain.connect(audioContext.destination);
+        
+        const osc = audioContext.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.value = 500 + Math.random() * 300;
+        osc.connect(gain);
+        
+        osc.start();
+        osc.stop(now + 0.1);
+        
+        gain.gain.exponentialRampToValueAtTime(0.00001, now + 0.12);
+        
+        // Автоматическая очистка
+        osc.onended = () => {
+            try {
+                gain.disconnect();
+                osc.disconnect();
+            } catch(e) {}
+        };
+    } catch(e) {
+        console.log('Play error:', e);
+    }
+}
+
+// Вешаем обработчик
+document.addEventListener('click', () => {
+    setupAudio();
+    playBubbleSound();
 });
