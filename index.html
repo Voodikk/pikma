@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Для тебя ♡</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="intro" id="intro">
+  <div class="intro-box">
+
+    <p class="welcome" id="welcomeText">Привет Пикма! ♡</p>
+
+    <div id="questionBlock" style="display:none;">
+      <p class="question">Перед тем как продолжить нужно подтвердить, что Никита самый красивый, крутой, классный, умный и вообще самый лучший в мире</p>
+      <p class="question" id="questionText">Нажми кнопочку "Да"</p>
+
+      <div class="buttons">
+        <button id="yesBtn">Да</button>
+        <button id="noBtn">Нет</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="mainContent" style="display:none;">
+  <!-- Звёзды -->
+  <div class="stars" id="stars"></div>
+
+  <!-- Частицы -->
+  <canvas class="particles-canvas" id="canvas"></canvas>
+
+  <!-- Открытка -->
+  <div class="card-wrapper">
+    <div class="card" id="card" onclick="triggerConfetti()" title="Нажми на меня ♡">
+
+      <div class="reveal" style="transition-delay: 0.1s;">
+        <p class="greeting">Пикме ✦</p>
+      </div>
+
+      <div class="reveal" style="transition-delay: 0.4s;">
+        <div class="heart-container">
+          <svg class="heart" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="heartGradient" cx="50%" cy="38%" r="65%">
+                <stop offset="0%"   stop-color="#ff6eb4"/>
+                <stop offset="100%" stop-color="#b0145a"/>
+              </radialGradient>
+              <filter id="heartGlow" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="4" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            <path
+                    d="M50 85 C50 85 5 52 5 28 C5 14 16 5 28 5 C37 5 44 10 50 18 C56 10 63 5 72 5 C84 5 95 14 95 28 C95 52 50 85 50 85Z"
+                    fill="url(#heartGradient)"
+                    filter="url(#heartGlow)"
+            />
+          </svg>
+          <div class="sparkles" id="sparkles"></div>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay: 0.7s;">
+        <p class="main-text">Ты делаешь<br>мой мир <em>ярче</em></p>
+      </div>
+
+      <div class="reveal" style="transition-delay: 0.9s;">
+        <div class="divider"></div>
+      </div>
+
+      <div class="reveal" style="transition-delay: 1.1s;">
+        <p class="message">
+          Иногда мне кажется,<br>
+          что всё <em>хорошее</em> в этом мире<br>
+          просто ведёт меня к <em>тебе</em> <br><br>
+          И в день, когда мы встретились,<br>
+          я даже не понял сразу,<br>
+          насколько это изменит <em>меня</em> 💜
+        </p>
+      </div>
+
+      <div class="reveal" style="transition-delay: 1.4s;">
+        <p class="signature">— от Никиты ♡</p>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="hint">нажми на открытку</p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
