@@ -168,6 +168,8 @@ yesBtn.addEventListener('click', () => {
 let offsetX = 0;
 let offsetY = 0;
 
+let moveRight = true;
+
 noBtn.addEventListener('click', () => {
     if (noClicks < noMessages.length) {
         questionText.textContent = noMessages[noClicks];
@@ -179,13 +181,20 @@ noBtn.addEventListener('click', () => {
 
     noClicks++;
 
-    offsetX += 20;
-    offsetY += 30;
+    if (moveRight) {
+        offsetX += 25;
+        offsetY += 35;
+        moveRight = false;
+    } else {
+        offsetX -= 25;
+        offsetY += 35;
+        moveRight = true;
+    }
 
-    const randomX = (Math.random() - 0.5) * 15;
-    const randomY = (Math.random() - 0.5) * 10;
+    const randomX = (Math.random() - 0.5) * 10;
+    const randomY = (Math.random() - 0.5) * 8;
 
-    noBtn.style.transition = 'transform 0.2s cubic-bezier(0.34, 1.2, 0.64, 1)';
+    noBtn.style.transition = 'transform 0.25s cubic-bezier(0.34, 1.2, 0.64, 1)';
     noBtn.style.transform = `translate(${offsetX + randomX}px, ${offsetY + randomY}px)`;
 
     const scale = Math.max(0.7, 1 - (noClicks * 0.04));
