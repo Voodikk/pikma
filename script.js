@@ -182,12 +182,12 @@ noBtn.addEventListener('click', () => {
     noClicks++;
 
     if (moveRight) {
-        offsetX += 25;
-        offsetY += 35;
+        offsetX += 15;
+        offsetY += 20;
         moveRight = false;
     } else {
-        offsetX -= 25;
-        offsetY += 35;
+        offsetX -= 15;
+        offsetY += 20;
         moveRight = true;
     }
 
