@@ -288,6 +288,14 @@ function playBetterBubbleSound() {
     }
 }
 
+// Функция для инициализации аудио (по первому клику)
+function initAudio() {
+    if (audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+}
+
 document.addEventListener('click', (event) => {
+    initAudio();
     playBetterBubbleSound();
 });
